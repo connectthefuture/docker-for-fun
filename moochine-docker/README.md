@@ -116,8 +116,8 @@ Installation of [Docker][1] on Ubuntu with kernel 3.8 or newer:
     EOF
     
 ### Build the image using our Dockerfile
-    
- sudo docker build - < Dockerfile -t="edwin/moochine-openresty" .
+sudo docker build -t edwin/moochine-openresty   - < Dockerfile
+
 This will create the contained environment which we then can re-use and launch for many projects later. The `-t` flag is the name for the image, you can choose your own name here if you want, to help you refer to the image by name later. The name mostly matters if you want to share/submit your docker image to repositories, see: <http://docs.docker.io/en/latest/use/workingwithrepository/> for more information about that.
 
 
@@ -125,8 +125,8 @@ This will create the contained environment which we then can re-use and launch f
 Now we can start the docker image that we built. We will map the directory from the host to the container so you can continue to use your favorite editor and development environment from the host. Note that the nginx.conf and app lives outside the container, so you can re-use this container image for all of your lua projects.
 
 ### Run our newly created Docker image
-
-    sudo docker run -t -i -p 8080:8081 -v=`pwd`:/moochine-demo -w=/moochine-demo edwin/moochine-openresty 
+sudo docker run -t -i -p 8080:8080 -v=`pwd`:/helloproj -w=/helloproj edwin/moochine-openresty 
+sudo docker run -d -t -i -p 8080:8081 -v=`pwd`:/moochine-demo -w=/moochine-demo  edwin/moochine-openresty
 `-p` expose the container port 8080 to the host port 8081.
 `-v` is the shared directory.
 `-w` is the working directoriy inside the container.

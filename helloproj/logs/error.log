@@ -1,0 +1,2 @@
+2014/08/09 17:48:29 [warn] 11#0: low address bits of 127.0.0.1/8 are meaningless in /helloproj/nginx.conf:12
+2014/08/09 17:48:29 [alert] 11#0: lua_code_cache is off; this will hurt performance in /helloproj/nginx.conf:18

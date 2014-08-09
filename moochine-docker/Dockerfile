@@ -24,7 +24,7 @@
 	  && rm -rf /ngx_openresty*
 	
 	EXPOSE 8080
-
+	CMD /usr/local/openresty/nginx/sbin/nginx -p `pwd` -c nginx.conf
 	RUN    mkdir -p /opt \
 	&&	cd /opt   \
 	&&    	git clone git://github.com/appwilldev/moochine.git  \
@@ -50,3 +50,4 @@
 	&&    $OPENRESTY_HOME/nginx/sbin/nginx -p $NGINX_FILES/ -c conf/p-nginx.conf  \
 	
 	&&    echo "nginx started!"
+
