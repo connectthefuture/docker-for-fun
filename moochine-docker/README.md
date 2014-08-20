@@ -126,7 +126,7 @@ Now we can start the docker image that we built. We will map the directory from 
 
 ### Run our newly created Docker image
 sudo docker run -t -i -p 8080:8080 -v=`pwd`:/helloproj -w=/helloproj edwin/moochine-openresty 
-sudo docker run -d -t -i -p 8080:8081 -v=`pwd`:/moochine-demo -w=/moochine-demo  edwin/moochine-openresty
+sudo docker run  -t -i -p 9800:9800 -v=`pwd`:/moochine-demo -w=/moochine-demo  edwin/moochine-openresty
 `-p` expose the container port 8080 to the host port 8081.
 `-v` is the shared directory.
 `-w` is the working directoriy inside the container.
