@@ -1,0 +1,5 @@
+2014/08/09 17:48:29 [warn] 11#0: low address bits of 127.0.0.1/8 are meaningless in /helloproj/nginx.conf:12
+2014/08/09 17:48:29 [alert] 11#0: lua_code_cache is off; this will hurt performance in /helloproj/nginx.conf:18
+2014/10/27 03:45:34 [emerg] 12#0: open() "/hello/nginx.conf" failed (2: No such file or directory)
+2014/10/27 03:48:16 [warn] 14#0: low address bits of 127.0.0.1/8 are meaningless in /openresty-clean/nginx.conf:12
+2014/10/27 03:48:16 [alert] 14#0: lua_code_cache is off; this will hurt performance in /openresty-clean/nginx.conf:21
