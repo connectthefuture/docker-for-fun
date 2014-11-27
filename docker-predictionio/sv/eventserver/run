@@ -1,0 +1,7 @@
+#!/bin/sh
+
+sv start hbase
+cd /hbase/bin && ./hbase shell region_status.rb 
+
+exec 2>&1
+exec /PredictionIO/bin/pio eventserver

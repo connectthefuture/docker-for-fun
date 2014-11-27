@@ -1,6 +1,18 @@
 Getting started with  moochine( Lua web development) using docker as your Lua web application server
 -----------------------------------------------
 
+ 尝试moochine-docker下的Dockerfile构建image                  
+在moochine-docker目录下                
+第一步                   
+sudo docker build -t edwin/moochine-openresty   - < Dockerfile                  
+第二步        在moochine-docker目录下          
+sudo docker run -t -i -p 8080:8080 -v=`pwd`:/moochine-docker -w=/moochine-docker edwin/moochine-openresty                  
+第三步             
+第三步 查看效果                  
+ curl http://127.0.0.1:8080/
+更改helloproj/app.lua中的内容后 再次测试 无需重启nginx 即可看到更改后的结果
+
+
 
 In this blog post I will guide you through a path to getting you started with moochine  by using the container technology software [Docker][1].
 
