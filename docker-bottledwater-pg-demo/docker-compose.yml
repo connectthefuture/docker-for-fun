@@ -1,0 +1,46 @@
+zookeeper:
+    image: confluent/zookeeper
+    ports:
+        - 2181:2181
+
+kafka:
+    image: confluent/kafka
+    ports:
+        - 9092:9092
+    links:
+        - zookeeper
+    environment:
+        KAFKA_LOG_CLEANUP_POLICY: compact
+schemaregistry:
+    image: confluent/schema-registry
+    ports:
+        - 8081:8081
+    links:
+        - zookeeper
+        - kafka
+    environment:
+        SCHEMA_REGISTRY_AVRO_COMPATIBILITY_LEVEL: none
+#可根据dockerfile.postgres编译fhirbase对应的waterpg 
+
+postgres:
+    image: edwin/fhirbase-postgres-bw:0.1
+    ports:
+        - 5432:5432
+    environment:
+        PGHOST: 192.168.59.103
+        PGUSER: fhirbase
+#可根据dockerfile.clent编译自己的客户端 同时可以修改默认数据库名称和用户 与FHIRBASE保持一致即可
+bottledwater:
+    image: edwin/fhirbase-bottledwater:0.1
+    links:
+        - kafka
+        - postgres
+        - schemaregistry
+
+consumer:
+    image: confluent/tools
+    entrypoint: ['/confluent-tools.sh', 'kafka-avro-console-consumer']
+    links:
+        - zookeeper
+        - kafka
+        - schemaregistry
