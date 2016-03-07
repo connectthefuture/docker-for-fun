@@ -20,6 +20,7 @@ RUN apk update \
        --without-http_userid_module \
        --without-http_uwsgi_module \
        --without-http_scgi_module \
+       --user=nginx --group=nginx \
   && make \
   && make install \
   && ln -s $OPENRESTY_PREFIX/nginx/sbin/nginx /usr/local/bin/nginx \
@@ -28,4 +29,8 @@ RUN apk update \
   && rm -rf /tmp/openresty-*
 
 WORKDIR $OPENRESTY_PREFIX/nginx
-CMD ["nginx", "-g", "daemon off;"]
+
+
+CMD ["nginx", "-g", "daemon off; error_log /dev/stderr info;"]
+
+#CMD ["nginx", "-g", "daemon off;"]
