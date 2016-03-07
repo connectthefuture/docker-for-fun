@@ -10,9 +10,19 @@ docker build  -t edwin/lor-openresty-alpine  .
 docker run -d -p 8888:8888 edwin/lor-openresty-alpine
 ````
 
+### ubuntu   
 docker run -t -i -v /home/edwin-clear/resources/sourceCode/docker-for-fun/docker-openresty/docker-lor-alpine/lor-example:/tmp/lor-example/   -w=/tmp/lor-example/   edwin/lor-openresty-alpine  /bin/sh
 
 docker run -t -i -v /home/edwin-clear/resources/sourceCode/docker-for-fun/docker-openresty/docker-lor-alpine/openresty-china:/tmp/openresty-china/   -w=/tmp/openresty-china/   edwin/lor-openresty-alpine  /bin/sh
+
+### mac
+
+docker run -t -i -v /Users/wanghaisheng/workspace/docker-for-fun/docker-openresty/docker-lor-alpine/lor-example:/tmp/lor-example/   -w=/tmp/lor-example/   edwin/lor-openresty-alpine  /bin/sh
+
+docker run -t -i -v /Users/wanghaisheng/workspace/docker-for-fun/docker-openresty/docker-lor-alpine/openresty-china:/tmp/openresty-china/   -w=/tmp/openresty-china/   edwin/lor-openresty-alpine  /bin/sh
+
+
+
 
 如下示例均以宿主机系统为ubuntu来演示，mac windows系统可能会存在不同
 ##　如果你使用的是ubuntu自带的docker

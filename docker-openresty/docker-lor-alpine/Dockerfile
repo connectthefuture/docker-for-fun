@@ -19,10 +19,11 @@ RUN apk update \
   && cd /tmp \
   && git clone https://github.com/sumory/lor  \
   && cd lor \
-  && sh install.sh
-
+  && sh install.sh \
+  && adduser -D -g '' -u 1000 nginx
 #RUN ln -sf /opt/openresty/luajit/bin/luajit /usr/local/bin/luajit
 RUN ln -sf /opt/openresty/luajit/bin/luajit /usr/bin/luajit
+
 
 ADD ./supervisord.conf /etc/
 RUN mkdir -p /var/log/supervisor 
