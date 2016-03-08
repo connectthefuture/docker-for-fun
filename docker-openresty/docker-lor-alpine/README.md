@@ -13,7 +13,7 @@ docker run -d -p 8888:8888 edwin/lor-openresty-alpine
 ### ubuntu   
 docker run -t -i -v /home/edwin-clear/resources/sourceCode/docker-for-fun/docker-openresty/docker-lor-alpine/lor-example:/tmp/lor-example/   -w=/tmp/lor-example/   edwin/lor-openresty-alpine  /bin/sh
 
-docker run -t -i -v /home/edwin-clear/resources/sourceCode/docker-for-fun/docker-openresty/docker-lor-alpine/openresty-china:/tmp/openresty-china/   -w=/tmp/openresty-china/   edwin/lor-openresty-alpine  /bin/sh
+docker run -t -i -p 8889:8888 -v /home/edwin-clear/resources/sourceCode/docker-for-fun/docker-openresty/docker-lor-alpine/openresty-china:/tmp/openresty-china/   -w=/tmp/openresty-china/   edwin/lor-openresty-alpine  /bin/sh
 
 ### mac
 

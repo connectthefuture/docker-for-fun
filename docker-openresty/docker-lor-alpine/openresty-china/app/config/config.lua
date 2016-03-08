@@ -52,17 +52,17 @@ return {
 	session_secret = "3584827dfed45b40328acb6242bdf13b",
 
 	-- 用于存储密码的盐，请一定要修改此值, 一旦使用不能修改，用户也可自行实现其他密码方案
-	pwd_secret = "salt_secret_for_password", 
+	pwd_secret = "1111111111111111111111111", 
 
 	-- mysql配置
 	mysql = {
 		timeout = 5000,
 		connect_config = {
-			host = "127.0.0.1",
-	        port = 3306,
-	        database = "blog",
-	        user = "root",
-	        password = "",
+			host = "192.168.19.206",
+	        port = 3307,
+	        database = "or_test",
+	        user = "or_test",
+	        password = "or_test",
 	        max_packet_size = 1024 * 1024
 		},
 		pool_config = {
@@ -74,7 +74,7 @@ return {
 	
 	-- 上传文件配置，如上传的头像、文章中的图片等
 	upload_config = {
-		dir = "/data/openresty-china/static", -- 文件目录，修改此值时须同时修改nginx配置文件中的$static_files_path值
+		dir = "../data/static", -- 文件目录，修改此值时须同时修改nginx配置文件中的$static_files_path值
 	},	
 
 }

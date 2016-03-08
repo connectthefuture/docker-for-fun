@@ -1,1 +1,4 @@
 2016/03/07 11:20:53 [alert] 20#0: lua_code_cache is off; this will hurt performance in /tmp/openresty-china/conf/nginx-dev.conf:21
+2016/03/08 11:35:34 [alert] 28#0: lua_code_cache is off; this will hurt performance in /tmp/openresty-china/conf/nginx-dev.conf:21
+2016/03/08 11:36:44 [alert] 40#0: lua_code_cache is off; this will hurt performance in /tmp/openresty-china/conf/nginx-dev.conf:21
+2016/03/08 11:41:32 [alert] 103#0: lua_code_cache is off; this will hurt performance in /tmp/openresty-china/conf/nginx-dev.conf:21
