@@ -5,6 +5,11 @@ ENV OPENRESTY_PREFIX /opt/openresty
 ENV OPENRESTY_BUILD_DEPS "make gcc musl-dev pcre-dev openssl-dev zlib-dev ncurses-dev readline-dev curl perl"
 ENV OPENRESTY_DEPS "libpcrecpp libpcre16 libpcre32 openssl libssl1.0 pcre libgcc libstdc++"
 
+RUN echo "ipv6" >> /etc/modules
+
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
+         echo " http://dl-cdn.alpinelinux.org/alpine/v3.3/community" >> /etc/apk/repositories; 
+    
 RUN apk update \
   && apk add --virtual tmp-build-deps $OPENRESTY_BUILD_DEPS \
   && cd /tmp \

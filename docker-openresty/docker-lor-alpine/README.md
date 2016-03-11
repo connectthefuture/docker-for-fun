@@ -1,3 +1,61 @@
+libuuid
+```
+
+# Install Lua and LuaRocks
+RUN apk add --update \
+    --repository http://dl-1.alpinelinux.org/alpine/edge/testing/ \
+    lua5.2 luarocks5.2 ca-certificates curl unzip \
+    && rm -rf /var/cache/apk/*
+
+# Create links
+RUN ln -s /usr/bin/lua5.2 /usr/bin/lua \
+    && ln -s /usr/bin/luarocks-5.2 /usr/bin/luarocks
+
+```
+
+```
+
+ENV VERSION 2.2.2
+
+WORKDIR /root
+RUN apk update \ && apk add build-base gcc make curl automake autoconf tar \
+		lua lua-dev --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
+		&& apk upgrade \
+		&& mkdir -m 777 -p /luarocks /lua \
+		&& wget http://luarocks.org/releases/luarocks-2.2.2.tar.gz \
+		&& tar -zxvf luarocks-2.2.2.tar.gz -C / \
+		&& cd /luarocks-2.2.2 \
+		&& ./configure; make bootstrap \
+		&& luarocks install luasocket \
+		&& apk del build-base gcc make curl automake autoconf tar \
+		&& apk upgrade \
+		&& rm -rf /var/cache/apk/* \
+		&& cd /lua \
+		&& rm -rf /luarocks \
+		&& apk update
+```
+
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
+         echo " http://dl-cdn.alpinelinux.org/alpine/v3.3/community" >> /etc/apk/repositories; 
+
+
+RUN echo "ipv6" >> /etc/modules
+RUN echo "http://dl-1.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; \
+    echo "http://dl-2.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; \
+    echo "http://dl-3.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; \
+    echo "http://dl-4.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; \
+    echo "http://dl-5.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; \
+    echo "http://dl-1.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
+    echo "http://dl-2.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
+    echo "http://dl-3.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
+    echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
+    echo "http://dl-5.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+    echo "http://dl-1.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
+    echo "http://dl-2.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
+    echo "http://dl-3.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
+    echo "http://dl-4.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
+    echo "http://dl-5.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; 
+
 ## 创建镜像
 
 ````

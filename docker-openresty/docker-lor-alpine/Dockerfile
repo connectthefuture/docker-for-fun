@@ -3,7 +3,7 @@ FROM edwin/openresty-alpine
 ENV OPENRESTY_VERSION 1.9.7.3
 ENV OPENRESTY_PREFIX /opt/openresty
 ENV LOR_VERSION V0.0.7
-ENV LOR_PREFIX /usr/local/LOR
+ENV LOR_PREFIX /usr/local/lor
 
 ENV OPENRESTY_BUILD_DEPS "git"
 
@@ -23,7 +23,7 @@ RUN apk update \
   && adduser -D -g '' -u 1000 nginx
 #RUN ln -sf /opt/openresty/luajit/bin/luajit /usr/local/bin/luajit
 RUN ln -sf /opt/openresty/luajit/bin/luajit /usr/bin/luajit
-
+RUN luarocks install uuid-dev
 
 ADD ./supervisord.conf /etc/
 RUN mkdir -p /var/log/supervisor 
