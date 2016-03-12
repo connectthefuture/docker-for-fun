@@ -1,0 +1,8 @@
+# Sample plugin.
+#- src: https://github.com/Capgemini/apollo-aurora-plugin.git
+#  path: contrib-plugins/roles
+#  name: aurora
+
+- src: https://github.com/wallies/ansible-datadog.git
+  path: contrib-plugins/roles
+  name: datadog

@@ -1,7 +1,0 @@
-# ignore the following file patterns
-.dockerignore
-
-.vagrant
-
-.git/
-

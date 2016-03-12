@@ -47,9 +47,6 @@ RUN apk add --update build-base \
 
 ADD ./supervisord.conf /etc/
 RUN mkdir -p /var/log/supervisor 
-ADD ./openresty-china /tmp/openresty-china
-
-RUN  cd /tmp/openresty-china
 
 
 EXPOSE 8888
