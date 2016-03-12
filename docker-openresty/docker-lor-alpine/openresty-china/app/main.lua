@@ -5,7 +5,7 @@ local reponse_time_middleware = require("app.middleware.response_time")
 local powered_by_middleware = require("app.middleware.powered_by")
 local session_middleware = require("lor.lib.middleware.session")
 local check_login_middleware = require("app.middleware.check_login")
-local uploader_middleware = require("app.middleware.uploader")
+--local uploader_middleware = require("app.middleware.uploader")
 local router = require("app.router")
 local whitelist = config.whitelist
 local view_config = config.view_config
@@ -33,9 +33,9 @@ app:use(powered_by_middleware('Lor Framework'))
 -- intercepter: login or not
 app:use(check_login_middleware(whitelist))
 -- uploader
-app:use(uploader_middleware({
-	dir = upload_config.dir
-}))
+--app:use(uploader_middleware({
+--	dir = upload_config.dir
+--}))
 
 router(app) -- business routers and routes
 

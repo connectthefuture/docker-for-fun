@@ -52,13 +52,13 @@ return {
 	session_secret = "3584827dfed45b40328acb6242bdf13b",
 
 	-- 用于存储密码的盐，请一定要修改此值, 一旦使用不能修改，用户也可自行实现其他密码方案
-	pwd_secret = "111111111111", 
+	pwd_secret = "111111", 
 
 	-- mysql配置
 	mysql = {
 		timeout = 5000,
 		connect_config = {
-			host = "10.0.0.2",
+			host = "192.168.99.100",
 	        port = 3306,
 	        database = "or_test",
 	        user = "root",
@@ -70,10 +70,11 @@ return {
         	pool_size = 50 -- connection pool size
 		}
 	},
+
 	
 	-- 上传文件配置，如上传的头像、文章中的图片等
 	upload_config = {
-		dir = "./data/static", -- 文件目录，修改此值时须同时修改nginx配置文件中的$static_files_path值
+		dir = "data/static", -- 文件目录，修改此值时须同时修改nginx配置文件中的$static_files_path值
 	},	
-	
+
 }

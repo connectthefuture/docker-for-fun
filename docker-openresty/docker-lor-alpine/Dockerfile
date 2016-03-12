@@ -22,7 +22,7 @@ RUN apk update \
   && sh install.sh \
   && rm -rf /lor \
   && adduser -D -g '' -u 1000 nginx
-#RUN ln -sf /opt/openresty/luajit/bin/luajit /usr/local/bin/luajit
+
 RUN ln -sf /opt/openresty/luajit/bin/luajit /usr/bin/luajit
 
 
@@ -47,11 +47,11 @@ RUN apk add --update build-base \
 
 ADD ./supervisord.conf /etc/
 RUN mkdir -p /var/log/supervisor 
-#RUN mkdir -p /tmp/openresty-china
 ADD ./openresty-china /tmp/openresty-china
 
-#RUN cd /tmp && LOR new vdemo
+RUN  cd /tmp/openresty-china
+
+
 EXPOSE 8888
-RUN  cd /tmp && cd openresty-china
 CMD ["/usr/bin/supervisord"]
-#ENTRYPOINT  ["LOR", "start"] 
+ENTRYPOINT  ["lord", "start"] 

@@ -1,0 +1,42 @@
+# tasks for running cadvisor
+- name: deploy cadvisor service
+  become: yes
+  become_user: root
+  template:
+    src: cadvisor.service.j2
+    dest: /etc/systemd/system/cadvisor.service
+  notify:
+    - reload systemd
+    - restart cadvisor
+  tags:
+    - cadvisor
+
+# Attach to the running container, or start it if needed
+# and forward all signals so that the process manager can detect
+# when a container stops and correctly restart it.
+- name: ensure cadvisor is running (and enable it at boot)
+  become: yes
+  service:
+    name: cadvisor
+    state: started
+    enabled: yes
+  tags:
+    - cadvisor
+
+- name: get cadvisor container ip
+  become: yes
+  command: >
+    docker inspect -f \{\{' '.NetworkSettings.IPAddress' '\}\} cadvisor
+  register: cadvisor_container_ip
+  tags:
+    - cadvisor
+
+- name: Set cadvisor consul service definition
+  become: yes
+  template:
+    src: cadvisor-consul.j2
+    dest: "{{ cadvisor_consul_dir }}/cadvisor.json"
+  notify:
+    - restart consul
+  tags:
+    - cadvisor

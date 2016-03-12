@@ -1,0 +1,43 @@
+- name: create marathon artifact store directory
+  when: marathon_artifact_store_dir is defined
+  file:
+    path: "{{ marathon_artifact_store_dir }}"
+    state: directory
+    mode: 0755
+  become: yes
+  tags:
+    - marathon
+
+- name: deploy marathon service
+  become: yes
+  become_user: root
+  template:
+    src: marathon.service.j2
+    dest: /etc/systemd/system/marathon.service
+  notify:
+    - reload systemd
+    - restart marathon
+  tags:
+    - marathon
+
+# Attach to the running container, or start it if needed
+# and forward all signals so that the process manager can detect
+# when a container stops and correctly restart it.
+- name: ensure marathon is running (and enable it at boot)
+  become: yes
+  service:
+    name: marathon
+    state: started
+    enabled: yes
+  tags:
+    - marathon
+
+- name: Set marathon consul service definition
+  become: yes
+  template:
+    src: marathon-consul.j2
+    dest: "{{ marathon_consul_dir }}/marathon.json"
+  notify:
+    - restart consul
+  tags:
+    - marathon

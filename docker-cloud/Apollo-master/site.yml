@@ -1,0 +1,60 @@
+---
+- hosts: all:!role=bastion
+  gather_facts: False
+  tasks:
+    - name: Wait for ssh port to become available from bastion server.
+      wait_for:
+        port: "{{ ansible_ssh_port }}"
+        host: "{{ ansible_ssh_host }}"
+        delay: 10
+        timeout: 180
+      delegate_to: "{{ bastion_ip }}"
+      sudo: False
+      when: bastion_ip is defined
+    - name: Wait for port 22 to become available from local server.
+      local_action: "wait_for port={{ ansible_ssh_port }} host={{ ansible_ssh_host }} delay=10 timeout=180"
+      sudo: False
+      when: bastion_ip is not defined
+
+- include: playbooks/coreos-bootstrap.yml
+
+- hosts: all:!role=bastion
+  roles:
+    - docker
+    - weave
+    - consul
+    # @todo - fix vault integration with coreOS
+    #- vault
+
+- hosts: all:!role=bastion
+  roles:
+    - registrator
+    - { role: cadvisor, when: cadvisor_enabled|bool }
+    - { role: prometheus, when: prometheus_enabled|bool }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
+
+- hosts: mesos_masters
+  roles:
+    - zookeeper
+    - { role: mesos, mesos_install_mode: "master" }
+    - { role: marathon, when: marathon_enabled|bool }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
+
+- hosts: mesos_slaves
+  roles:
+    - { role: mesos, mesos_install_mode: "slave" }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
+
+- hosts: load_balancers
+  roles:
+    - { role: traefik, tags: ["traefik"] }
+  environment:
+    DOCKER_HOST: "{{ docker_host }}"
+
+# Installing DCOS frameworks and apps from one master.
+- include: dcos.yml
+
+- include: contrib-plugins/playbook.yml

@@ -1,0 +1,58 @@
+---
+# Tasks for Slave nodes
+- name: create mesos-slave work directory
+  file:
+    path: "{{ mesos_slave_work_dir }}"
+    state: directory
+    mode: 0755
+  become: yes
+  tags:
+    - mesos-slave
+
+- name: deploy mesos-slave service
+  become: yes
+  become_user: root
+  template:
+    src: mesos-slave.service.j2
+    dest: /etc/systemd/system/mesos-slave.service
+  notify:
+    - reload systemd
+    - restart mesos slave
+  tags:
+    - mesos-slave
+
+- name: ensure mesos-slave is running (and enable it at boot)
+  become: yes
+  service:
+    name: mesos-slave
+    state: started
+    enabled: yes
+  tags:
+    - mesos-slave
+
+- name: run prometheus mesos slave exporter container
+  when: prometheus_enabled|bool
+  docker:
+    name: mesos-exporter
+    image: "{{ prometheus_mesos_exporter_image }}"
+    command: "-exporter.scrape-mode=slave -exporter.url=http://{{ mesos_hostname }}:{{ mesos_slave_port }}"
+    state: started
+    restart_policy: always
+    ports:
+    - "{{ prometheus_mesos_exporter_port }}:{{ prometheus_mesos_exporter_port }}"
+  environment: "{{ proxy_env }}"
+  tags:
+    - prometheus
+    - mesos_slave
+
+- name: Set mesos-exporter consul service definition
+  when: prometheus_enabled|bool
+  become: yes
+  template:
+    src: mesos-exporter-consul.j2
+    dest: "{{ consul_dir }}/mesos-exporter.json"
+  notify:
+    - restart consul
+  tags:
+    - prometheus
+    - mesos_slave

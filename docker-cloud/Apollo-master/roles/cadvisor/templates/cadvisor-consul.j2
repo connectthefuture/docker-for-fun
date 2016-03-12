@@ -1,0 +1,13 @@
+{
+  "service": {
+    "name": "cadvisor",
+    "tags": [ "cadvisor" ],
+    "check": {
+      "docker_container_id": "cadvisor",
+      "shell": "/bin/sh",
+      "script": "wget -q -s {{ cadvisor_container_ip.stdout }}:8080/containers/ -O /dev/null",
+      "interval": "10s",
+      "timeout": "3s"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "nodejs-rest-api-v2",
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "capgemini/apollo-example-nodejs-rest:2.0.0",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  },
+  "labels": {
+    "traefik.backend": "backend-nodejs-rest-api"
+  },
+  "ports": [0],
+  "healthChecks": [
+    {
+    "path": "/",
+    "portIndex": 0,
+    "protocol": "HTTP",
+    "gracePeriodSeconds": 3,
+    "intervalSeconds": 10,
+    "timeoutSeconds": 10,
+    "maxConsecutiveFailures": 3
+    }
+  ],
+  "cpus": 0.3,
+  "mem": 64.0,
+  "instances": 1,
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 0.1
+  }
+}

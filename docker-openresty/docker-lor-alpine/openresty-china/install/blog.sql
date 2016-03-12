@@ -23,6 +23,7 @@
 # Dump of table category
 # ------------------------------------------------------------
 
+USE blog;
 DROP TABLE IF EXISTS `category`;
 
 CREATE TABLE `category` (

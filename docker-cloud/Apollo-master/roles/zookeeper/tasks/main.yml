@@ -1,0 +1,71 @@
+- name: create zookeeper config directory
+  file:
+    path: "{{ zookeeper_config_dir }}"
+    state: directory
+    follow: yes
+    mode: 0755
+  become: yes
+  tags:
+    - zookeeper
+
+- name: Create zookeeper config files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  become: yes
+  with_items:
+    - src: zoo.cfg.j2
+      dest: "{{ zookeeper_config_dir }}/zoo.cfg"
+    - src: environment.j2
+      dest: "{{ zookeeper_config_dir }}/environment"
+    - src: configuration.xsl.j2
+      dest: "{{ zookeeper_config_dir }}/configuration.xsl"
+    - src: log4j.properties.j2
+      dest: "{{ zookeeper_config_dir }}/log4j.properties"
+  notify:
+    - reload systemd
+    - restart zookeeper
+  tags:
+    - zookeeper
+
+- name: Create zookeeper myid file
+  copy:
+    content: "{{ zookeeper_id }}"
+    dest: "{{ zookeeper_config_dir }}/myid"
+    mode: 0644
+  become: yes
+  notify:
+    - restart zookeeper
+  tags:
+    - zookeeper
+
+- name: deploy zookeeper service
+  become: yes
+  become_user: root
+  template:
+    src: zookeeper.service.j2
+    dest: /etc/systemd/system/zookeeper.service
+  notify:
+    - reload systemd
+    - restart zookeeper
+  tags:
+    - zookeeper
+
+- name: enable zookeeper
+  become: yes
+  service:
+    name: zookeeper
+    enabled: yes
+    state: started
+  tags:
+    - zookeeper
+
+- name: set zookeeper consul service definition
+  become: yes
+  template:
+    src: zookeeper-consul.j2
+    dest: "{{ consul_dir }}/zookeeper.json"
+  notify:
+    - restart consul
+  tags:
+    - zookeeper

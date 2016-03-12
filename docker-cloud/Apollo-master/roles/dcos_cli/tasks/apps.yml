@@ -1,0 +1,53 @@
+- include_vars: "{{ item.name }}.yml"
+  with_items:
+    - "{{ dcos_cli_apps_list }}"
+
+# Create the JSON files for apps
+- name: create json files for apps
+  when: "dcos_cli_app_{{ item.name }}_enabled | bool"
+  run_once: true
+  template:
+    src: '{{ item.name }}.json.j2'
+    dest: "/etc/marathon/{{ item.name }}.json"
+    mode: 0755
+  become: yes
+  tags:
+    - "{{ item.name }}"
+    - dcos_cli
+  with_items:
+    - "{{ dcos_cli_apps_list }}"
+
+- name: add marathon app via dcos-cli
+  when: "dcos_cli_app_{{ item.name }}_enabled | bool"
+  run_once: true
+  docker:
+    name: "{{ item.name }}"
+    image: "{{ dcos_cli_image }}"
+    state: started
+    command: "marathon {{ item.type }} add /config/{{ item.name }}.json"
+    volumes:
+      - "/etc/marathon:/config"
+    env:
+      "{{ dcos_cli_container_environment }}"
+  tags:
+    - "{{ item.name }}"
+    - dcos_cli
+  with_items:
+    - "{{ dcos_cli_apps_list }}"
+
+
+- name: remove marathon app via dcos-cli
+  when: "not dcos_cli_app_{{ item.name }}_enabled | bool"
+  run_once: true
+  docker:
+    name: "{{ item.name }}"
+    image: "{{ dcos_cli_image }}"
+    state: started
+    command: "marathon {{ item.type }} remove {{ item.name }}"
+    env:
+      "{{ dcos_cli_container_environment }}"
+  tags:
+    - "{{ item.name }}"
+    - dcos_cli
+  with_items:
+    - "{{ dcos_cli_apps_list }}"

@@ -18,4 +18,4 @@ fi
 
 mkdir -p logs & mkdir -p tmp
 echo "Use profile: "${PROFILE}
-nginx -p `pwd`/ -c conf/nginx-${PROFILE}.conf
+/usr/local/openresty/nginx/sbin/nginx -p `pwd`/ -c conf/nginx-${PROFILE}.conf

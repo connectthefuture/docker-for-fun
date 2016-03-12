@@ -1,6 +1,6 @@
-2016/03/12 05:47:15 [error] 89#0: *1 lua entry thread aborted: runtime error: error loading module 'app.config.config' from file './app/config/config.lua':
-	./app/config/config.lua:80: '<eof>' expected
-stack traceback:
-coroutine 0:
-	[C]: in function 'require'
-	/tmp/openresty-china/./app/main.lua:3: in function </tmp/openresty-china/./app/main.lua:1>, client: 192.168.99.1, server: , request: "GET / HTTP/1.1", host: "192.168.99.100:8888"
+2016/03/12 07:19:12 [error] 24#0: *1 connect() failed (111: Connection refused), client: 192.168.99.1, server: , request: "GET / HTTP/1.1", host: "192.168.99.100:8889"
+2016/03/12 07:19:12 [error] 24#0: *1 connect() failed (111: Connection refused), client: 192.168.99.1, server: , request: "GET / HTTP/1.1", host: "192.168.99.100:8889"
+2016/03/12 07:19:12 [error] 24#0: *1 connect() failed (111: Connection refused), client: 192.168.99.1, server: , request: "GET / HTTP/1.1", host: "192.168.99.100:8889"
+2016/03/12 07:19:12 [error] 24#0: *1 attempt to set ngx.header.HEADER after sending out response headers, client: 192.168.99.1, server: , request: "GET / HTTP/1.1", host: "192.168.99.100:8889"
+2016/03/12 07:19:12 [error] 24#0: *1 attempt to set ngx.header.HEADER after sending out response headers, client: 192.168.99.1, server: , request: "GET / HTTP/1.1", host: "192.168.99.100:8889"
+2016/03/12 07:19:12 [error] 24#0: *1 attempt to set ngx.status after sending out response headers, client: 192.168.99.1, server: , request: "GET / HTTP/1.1", host: "192.168.99.100:8889"

@@ -1,0 +1,32 @@
+{
+  "datacenter": "{{ consul_dc }}",
+  "advertise_addr": "{{ consul_advertise }}",
+  "node_name": "{{ consul_node_name }}",
+  "domain": "{{ consul_domain }}",
+  "rejoin_after_leave": true,
+  "client_addr": "{{ consul_client_addr }}",
+  "ports": {"dns": 53},
+{% if consul_bootstrap_expect > 1 %}
+  "retry_join": [ {{ consul_retry_join }} ],
+{% endif %}
+{% if inventory_hostname in groups[consul_servers_group] %}
+  "server": true,
+  "bootstrap_expect": {{ consul_bootstrap_expect }},
+  "dns_config": {
+    "allow_stale": false
+  },
+  "ui": true,
+{% else %}
+  "leave_on_terminate": true,
+  "dns_config": {
+    "allow_stale": true,
+    "max_stale": "1s"
+  },
+{% endif %}
+{% if consul_atlas_join|bool %}
+  "atlas_join": true,
+  "atlas_token": "{{ consul_atlas_token }}",
+  "atlas_infrastructure": "{{ consul_atlas_infrastructure }}",
+{% endif %}
+  "data_dir": "{{ consul_data_dir }}"
+}

@@ -1,0 +1,25 @@
+---
+# handlers file for mesos
+- name: start mesos master
+  become: yes
+  service:
+    name: mesos-master
+    state: started
+
+- name: start mesos slave
+  become: yes
+  service:
+    name: mesos-slave
+    state: started
+
+- name: restart mesos master
+  become: yes
+  service:
+    name: mesos-master
+    state: restarted
+
+- name: restart mesos slave
+  become: yes
+  service:
+    name: mesos-slave
+    state: restarted

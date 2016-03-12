@@ -39,7 +39,7 @@ docker run -t -i -p 8889:8888 -v /home/edwin-clear/resources/sourceCode/docker-f
 
 ### mac
 
-docker run -t -i -p 8889:8888 -v /Users/wanghaisheng/workspace/docker-for-fun/docker-openresty/docker-lor-alpine/lor-example:/tmp/lor-example/   -w=/tmp/lor-example/   edwin/lor-openresty-alpine  /bin/sh
+docker run -t -i -p 8889:8888 -v /Users/wanghaisheng/workspace/docker-for-fun/docker-openresty/docker-lor-alpine:/tmp/   -w=/tmp/   edwin/lor-openresty-alpine  /bin/sh
 
 docker run -t -i -p 8888:8888 -v /Users/wanghaisheng/workspace/docker-for-fun/docker-openresty/docker-lor-alpine/openresty-china:/tmp/openresty-china/   -w=/tmp/openresty-china/   edwin/lor-openresty-alpine 
 
