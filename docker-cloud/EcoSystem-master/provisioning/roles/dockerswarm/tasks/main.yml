@@ -1,0 +1,8 @@
+---
+- name: Swarm manager task
+  include: manager.yml
+  when: ansible_fqdn in swarm.master_name 
+
+- name: Swarm agent task
+  include: agent.yml
+  when: swarm.agent_name in ansible_fqdn

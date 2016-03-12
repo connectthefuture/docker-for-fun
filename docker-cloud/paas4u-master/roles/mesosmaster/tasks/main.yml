@@ -1,0 +1,99 @@
+- name: update hosts file
+  template: src=../../common/templates/hosts.j2 dest=/etc/hosts
+
+- name: add mesosphere repo
+  apt_repository: repo="deb http://repos.mesosphere.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main" state=present
+
+- name: add an apt key from ubuntu keyserver 
+  apt_key: keyserver=keyserver.ubuntu.com id=E56151BF
+
+- name: add openjdk repo
+  apt_repository: repo="ppa:openjdk-r/ppa"
+
+- name: update cache
+  apt: update_cache=yes
+
+- name: install openjdk
+  apt: pkg=openjdk-8-jdk state=latest
+
+- name: add an apt signing key from mit for docker
+  apt_key: keyserver=hkp://pgp.mit.edu:80 id=58118E89F3A912897C070ADBF76221572C52609D
+
+- name: add docker repo
+  apt_repository: repo="deb https://apt.dockerproject.org/repo {{ ansible_distribution|lower }}-{{ ansible_distribution_release }} main" state=present
+
+- name: install docker
+  apt: pkg=docker-engine
+
+- name: add docker to list of containerizers
+  lineinfile: dest=/etc/mesos-slave/containerizers create=yes line="docker,mesos"
+
+- name: increase mesos timeout for large containers
+  lineinfile: dest=/etc/mesos-slave/executor_registration_timeout create=yes line="5mins"
+
+- name: install mesosphere (includes zookeeper, mesos, marathon and chronos)
+  apt: pkg=mesosphere
+
+- name: configure zookeeper ID
+  replace: dest=/etc/zookeeper/conf/myid regexp="replace this text with the cluster-unique zookeeper's instance id \(1-255\)" replace="1"
+
+- name: start zookeeper
+  service: name=zookeeper state=started enabled=yes
+
+- name: configure syslog logging for mesos
+  copy: src=../../common/files/mesos.conf dest=/etc/rsyslog.d/
+
+- name: marathon.log
+  file: path=/var/log/mesos/marathon.log state=touch owner=root group=syslog mode="g+rw"
+
+- name: mesos-master.log
+  file: path=/var/log/mesos/mesos-master.log state=touch owner=root group=syslog mode="g+rw"
+
+- name: mesos-slave.log
+  file: path=/var/log/mesos/mesos-slave.log state=touch owner=root group=syslog mode="g+rw"
+
+- name: chronos
+  file: path=/var/log/mesos/chronos.log state=touch owner=root group=syslog mode="g+rw"
+
+- name: restart rsyslog
+  service: name=rsyslog state=restarted
+
+- name: add mesos cluster name
+  lineinfile: dest=/etc/mesos-master/cluster create=yes line="DevCluster01"
+
+- name: start mesos-master
+  service: name=mesos-master state=started enabled=yes
+
+- name: start mesos-slave
+  service: name=mesos-slave state=started enabled=yes
+
+- name: start marathon
+  service: name=marathon state=started enabled=yes
+
+- name: start chronos
+  service: name=chronos state=started enabled=yes
+
+- name: install mesos-dns binary version 0.4.0
+  shell: wget -P /tmp https://github.com/mesosphere/mesos-dns/releases/download/v0.4.0/mesos-dns-v0.4.0-linux-amd64.gz;gunzip /tmp/mesos-dns-v0.4.0-linux-amd64.gz;mv /tmp/mesos-dns-v0.4.0-linux-amd64 /usr/local/bin/mesos-dns;chmod u+rwx /usr/local/bin/mesos-dns
+
+- name: configure dns resolv
+  template: src=../../common/templates/resolv.conf.j2 dest=/etc/resolv.conf
+
+- name: configure mesos-dns
+  copy: src=../files/mesos-dns/config.json dest=/etc/mesos-dns/
+
+- name: copy marathon json file to remote node
+  copy: src=../files/mesos-dns/deploy_to_marathon.json dest=/tmp/
+
+- wait_for: host=192.168.33.10 port=8080 delay=10
+
+- name: deploy mesos-dsn application in mesos using marathon api
+  command: curl -X POST http://192.168.33.10:8080/v2/apps -d @/tmp/deploy_to_marathon.json -H "Content-type{{':'}} application/json"
+
+- wait_for: host=www.google.com port=80 delay=10
+
+- name: mesos version info
+  shell: dpkg -l | grep ' zookeeper \| mesos \| marathon \| chronos \| mesosphere ' 
+  register: out
+- debug: var=out.stdout_lines
+

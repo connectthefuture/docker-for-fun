@@ -1,0 +1,7 @@
+{
+
+"Datacenter": "dc1", 
+"Name": "servicediscovery", 
+"Address": "192.168.33.10", 
+"Port": 8500
+}

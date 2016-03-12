@@ -1,0 +1,11 @@
+{
+    "id": "python",
+    "cmd": "python -m SimpleHTTPServer $PORT",
+    "mem": 16,
+    "cpus": 0.1,
+    "instances": 1,
+    "labels": {
+        "HAPROXY_HTTP": "true",
+        "HTTP_PORT_IDX_0_NAME": "python"
+    }
+}

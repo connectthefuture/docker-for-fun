@@ -1,45 +1,6 @@
-2016/03/08 11:35:53 [error] 30#0: *1 lua entry thread aborted: runtime error: ./app/libs/uuid/uuid.lua:29: Error loading shared library libuuid.so: No such file or directory
+2016/03/12 05:47:15 [error] 89#0: *1 lua entry thread aborted: runtime error: error loading module 'app.config.config' from file './app/config/config.lua':
+	./app/config/config.lua:80: '<eof>' expected
 stack traceback:
 coroutine 0:
 	[C]: in function 'require'
-	/tmp/openresty-china/./app/main.lua:8: in function </tmp/openresty-china/./app/main.lua:1>, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "172.17.0.3:8888"
-2016/03/08 11:36:05 [error] 30#0: *2 lua entry thread aborted: runtime error: ./app/libs/uuid/uuid.lua:29: Error loading shared library libuuid.so: No such file or directory
-stack traceback:
-coroutine 0:
-	[C]: in function 'require'
-	/tmp/openresty-china/./app/main.lua:8: in function </tmp/openresty-china/./app/main.lua:1>, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8889"
-2016/03/08 11:36:51 [error] 42#0: *1 lua entry thread aborted: runtime error: ./app/libs/uuid/uuid.lua:29: Error loading shared library libuuid.so: No such file or directory
-stack traceback:
-coroutine 0:
-	[C]: in function 'require'
-	/tmp/openresty-china/./app/main.lua:8: in function </tmp/openresty-china/./app/main.lua:1>, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "172.17.0.3:8888"
-2016/03/08 11:36:55 [error] 42#0: *2 lua entry thread aborted: runtime error: ./app/libs/uuid/uuid.lua:29: Error loading shared library libuuid.so: No such file or directory
-stack traceback:
-coroutine 0:
-	[C]: in function 'require'
-	/tmp/openresty-china/./app/main.lua:8: in function </tmp/openresty-china/./app/main.lua:1>, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8889"
-2016/03/08 11:36:59 [error] 42#0: *3 lua entry thread aborted: runtime error: ./app/libs/uuid/uuid.lua:29: Error loading shared library libuuid.so: No such file or directory
-stack traceback:
-coroutine 0:
-	[C]: in function 'require'
-	/tmp/openresty-china/./app/main.lua:8: in function </tmp/openresty-china/./app/main.lua:1>, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "172.17.0.3:8888"
-2016/03/08 11:41:38 [error] 104#0: *1 lua entry thread aborted: runtime error: ./app/libs/uuid/uuid.lua:29: Error loading shared library libuuid.so: No such file or directory
-stack traceback:
-coroutine 0:
-	[C]: in function 'require'
-	/tmp/openresty-china/./app/main.lua:8: in function </tmp/openresty-china/./app/main.lua:1>, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "172.17.0.3:8888"
-2016/03/08 11:41:46 [error] 104#0: *2 lua entry thread aborted: runtime error: ./app/libs/uuid/uuid.lua:29: Error loading shared library libuuid.so: No such file or directory
-stack traceback:
-coroutine 0:
-	[C]: in function 'require'
-	/tmp/openresty-china/./app/main.lua:8: in function </tmp/openresty-china/./app/main.lua:1>, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "172.17.0.3:8888"
-2016/03/09 02:00:21 [error] 126#0: *1 lua entry thread aborted: runtime error: ./app/libs/uuid/uuid.lua:29: Error loading shared library libuuid.so: No such file or directory
-stack traceback:
-coroutine 0:
-	[C]: in function 'require'
-	/tmp/openresty-china/./app/main.lua:8: in function </tmp/openresty-china/./app/main.lua:1>, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "172.17.0.3:8888"
-2016/03/09 02:00:37 [error] 126#0: *2 lua entry thread aborted: runtime error: ./app/libs/uuid/uuid.lua:29: Error loading shared library libuuid.so: No such file or directory
-stack traceback:
-coroutine 0:
-	[C]: in function 'require'
-	/tmp/openresty-china/./app/main.lua:8: in function </tmp/openresty-china/./app/main.lua:1>, client: 172.17.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8889"
+	/tmp/openresty-china/./app/main.lua:3: in function </tmp/openresty-china/./app/main.lua:1>, client: 192.168.99.1, server: , request: "GET / HTTP/1.1", host: "192.168.99.100:8888"

@@ -1,25 +1,43 @@
 FROM edwin/openresty-alpine
-ENV VERSION 2.2.2
+
+ENV LUAROCKS_VERSION luarocks-2.3.0
 
 WORKDIR /root
-RUN apk update \
-		&& apk add build-base gcc make curl automake autoconf tar \
-		lua lua-dev --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
-		&& apk upgrade \
-		&& mkdir -m 777 -p /luarocks /lua \
-		&& wget http://luarocks.org/releases/luarocks-${VERSION}.tar.gz \
-		&& tar -zxvf luarocks-${VERSION}.tar.gz -C / \
-		&& cd /luarocks-${VERSION} \
-		&& ./configure; make bootstrap \
-		&& luarocks install luasocket \
-		&& apk del build-base gcc make curl automake autoconf tar \
-		&& apk upgrade \
-		&& rm -rf /var/cache/apk/* \
-		&& cd /lua \
-		&& rm -rf /luarocks \
-		&& apk update
+RUN echo "==> Installing LuaRocks dependencies ..." \
+  && apk --no-cache add --virtual build-dependencies \
+    curl \
+    make \
+    musl-dev \
+    gcc \
+    ncurses-dev \
+    openssl-dev \
+    pcre-dev \
+    perl \
+    readline-dev \
+    zlib-dev \
 
-WORKDIR /lua
-VOLUME /lua
+  && echo "==> Downloading LuaRocks ..." \
+  && curl -sSL http://keplerproject.github.io/luarocks/releases/$LUAROCKS_VERSION.tar.gz | tar -xz \
+  && cd $LUAROCKS_VERSION \
+  && echo "==> Configuring LuaRocks ..." \
+  && ./configure \
+    --prefix=$OPENRESTY_PREFIX/luajit \
+    --lua-suffix=jit-2.1.0-beta1 \
+    --with-lua=$OPENRESTY_PREFIX/luajit \
+    --with-lua-lib=$OPENRESTY_PREFIX/luajit/lib \
+    --with-lua-include=$OPENRESTY_PREFIX/luajit/include/luajit-2.1 \
+  && echo "==> Building LuaRocks ..." \
+  && make build \
+  && echo "==> Installing LuaRocks ..." \
+  && make install \
+  && echo "==> Cleaning up LuaRocks installation ..." \
+  && rm -rf $TMP_DIR/$LUAROCKS_VERSION \
+  && apk del build-dependencies \
+  && rm -rf ~/.cache
 
-CMD ["/bin/echo", "Base image!"]
+RUN ln -sf $OPENRESTY_PREFIX/luajit/bin/luarocks /usr/local/bin/luarocks
+
+RUN apk --no-cache add unzip
+
+WORKDIR $NGINX_PREFIX
+

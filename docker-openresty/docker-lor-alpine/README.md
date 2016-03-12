@@ -1,60 +1,24 @@
 libuuid
 ```
+RUN apk add --update build-base \
+                     cmake \
+                     gnutls \
+                     gnutls-dev \
+                     libstdc++ \
+    && wget -O- http://downloads.sourceforge.net/project/libuuid/libuuid-1.0.3.tar.gz | tar xz \
+        && cd libuuid-1.0.3 \
+        && ./configure --prefix=$OPENRESTY_PREFIX/lualib \
+        && make install \
+        && cd .. \
+        && rm -rf libuuid-1.0.3 \
 
-# Install Lua and LuaRocks
-RUN apk add --update \
-    --repository http://dl-1.alpinelinux.org/alpine/edge/testing/ \
-    lua5.2 luarocks5.2 ca-certificates curl unzip \
-    && rm -rf /var/cache/apk/*
-
-# Create links
-RUN ln -s /usr/bin/lua5.2 /usr/bin/lua \
-    && ln -s /usr/bin/luarocks-5.2 /usr/bin/luarocks
-
-```
-
-```
-
-ENV VERSION 2.2.2
-
-WORKDIR /root
-RUN apk update \ && apk add build-base gcc make curl automake autoconf tar \
-		lua lua-dev --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
-		&& apk upgrade \
-		&& mkdir -m 777 -p /luarocks /lua \
-		&& wget http://luarocks.org/releases/luarocks-2.2.2.tar.gz \
-		&& tar -zxvf luarocks-2.2.2.tar.gz -C / \
-		&& cd /luarocks-2.2.2 \
-		&& ./configure; make bootstrap \
-		&& luarocks install luasocket \
-		&& apk del build-base gcc make curl automake autoconf tar \
-		&& apk upgrade \
-		&& rm -rf /var/cache/apk/* \
-		&& cd /lua \
-		&& rm -rf /luarocks \
-		&& apk update
-```
-
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
-         echo " http://dl-cdn.alpinelinux.org/alpine/v3.3/community" >> /etc/apk/repositories; 
+]```
 
 
-RUN echo "ipv6" >> /etc/modules
-RUN echo "http://dl-1.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; \
-    echo "http://dl-2.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; \
-    echo "http://dl-3.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; \
-    echo "http://dl-4.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; \
-    echo "http://dl-5.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; \
-    echo "http://dl-1.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
-    echo "http://dl-2.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
-    echo "http://dl-3.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
-    echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
-    echo "http://dl-5.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
-    echo "http://dl-1.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
-    echo "http://dl-2.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
-    echo "http://dl-3.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
-    echo "http://dl-4.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
-    echo "http://dl-5.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; 
+apk add libuuid 
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/' /etc/apk/repositories
+
 
 ## 创建镜像
 
@@ -75,11 +39,9 @@ docker run -t -i -p 8889:8888 -v /home/edwin-clear/resources/sourceCode/docker-f
 
 ### mac
 
-docker run -t -i -v /Users/wanghaisheng/workspace/docker-for-fun/docker-openresty/docker-lor-alpine/lor-example:/tmp/lor-example/   -w=/tmp/lor-example/   edwin/lor-openresty-alpine  /bin/sh
+docker run -t -i -p 8889:8888 -v /Users/wanghaisheng/workspace/docker-for-fun/docker-openresty/docker-lor-alpine/lor-example:/tmp/lor-example/   -w=/tmp/lor-example/   edwin/lor-openresty-alpine  /bin/sh
 
-docker run -t -i -v /Users/wanghaisheng/workspace/docker-for-fun/docker-openresty/docker-lor-alpine/openresty-china:/tmp/openresty-china/   -w=/tmp/openresty-china/   edwin/lor-openresty-alpine  /bin/sh
-
-
+docker run -t -i -p 8888:8888 -v /Users/wanghaisheng/workspace/docker-for-fun/docker-openresty/docker-lor-alpine/openresty-china:/tmp/openresty-china/   -w=/tmp/openresty-china/   edwin/lor-openresty-alpine 
 
 
 如下示例均以宿主机系统为ubuntu来演示，mac windows系统可能会存在不同

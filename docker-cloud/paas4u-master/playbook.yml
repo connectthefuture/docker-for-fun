@@ -1,0 +1,19 @@
+---
+- hosts: master
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  roles:
+    - mesosmaster
+    - consulserver
+    - mesosconsul
+    - haproxyconsul
+
+- hosts: nodes
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  roles:
+      - mesosslave
+      - consulclient
+      - sampletestapps

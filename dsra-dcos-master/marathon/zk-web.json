@@ -1,0 +1,19 @@
+{
+  "id": "/dsra/zk-web",
+  "cpus": 1.0,
+  "mem": 2048.0,
+  "instances": 1,
+  "cmd": "lein run",
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "goodguide/zk-web",
+      "forcePullImage": true,
+      "network": "BRIDGE",
+      "portMappings": [
+        { "containerPort": 8080, "hostPort": 0, "protocol": "tcp" }
+      ]
+    }
+  },
+  "maxLaunchDelaySeconds": 7200
+}

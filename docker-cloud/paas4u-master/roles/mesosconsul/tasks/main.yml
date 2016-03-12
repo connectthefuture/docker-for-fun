@@ -1,0 +1,5 @@
+- name: copy marathon json file to remote node
+  copy: src=../files/deploy_to_marathon.json dest=/tmp/
+
+- name: deploy mesos-consul application in mesos using marathon api
+  command: curl -X POST http://192.168.33.10:8080/v2/apps -d @/tmp/deploy_to_marathon.json -H "Content-type{{':'}} application/json"

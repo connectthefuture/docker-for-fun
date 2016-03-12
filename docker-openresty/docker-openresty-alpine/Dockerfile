@@ -1,41 +1,78 @@
 FROM alpine:3.3
+MAINTAINER edwin_uestc <edwin_uestc@163.com>
 
-ENV OPENRESTY_VERSION 1.9.7.3
-ENV OPENRESTY_PREFIX /opt/openresty
-ENV OPENRESTY_BUILD_DEPS "make gcc musl-dev pcre-dev openssl-dev zlib-dev ncurses-dev readline-dev curl perl"
-ENV OPENRESTY_DEPS "libpcrecpp libpcre16 libpcre32 openssl libssl1.0 pcre libgcc libstdc++"
+ENV LUA_SUFFIX=jit-2.1.0-beta1 \
+    LUAJIT_VERSION=2.1 \
+    NGINX_PREFIX=/opt/openresty/nginx \
+    OPENRESTY_PREFIX=/opt/openresty \
+    OPENRESTY_SRC_SHA1=1a2029e1c854b6ac788b4d734dd6b5c53a3987ff \
+    OPENRESTY_VERSION=1.9.7.3 \
+    VAR_PREFIX=/var/nginx
 
-RUN echo "ipv6" >> /etc/modules
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/' /etc/apk/repositories
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.3/main" >> /etc/apk/repositories; \
-         echo " http://dl-cdn.alpinelinux.org/alpine/v3.3/community" >> /etc/apk/repositories; 
-    
-RUN apk update \
-  && apk add --virtual tmp-build-deps $OPENRESTY_BUILD_DEPS \
+
+RUN set -ex \
+  && apk --no-cache add --virtual .build-dependencies \
+    curl \
+    make \
+    musl-dev \
+    gcc \
+    ncurses-dev \
+    openssl-dev \
+    pcre-dev \
+    perl \
+    readline-dev \
+    zlib-dev \
+  \
+  && curl -fsSL http://openresty.org/download/openresty-${OPENRESTY_VERSION}.tar.gz -o /tmp/openresty.tar.gz \
+  \
   && cd /tmp \
-  && curl -sSL http://openresty.org/download/openresty-${OPENRESTY_VERSION}.tar.gz | tar -xvz \
-  && cd openresty-${OPENRESTY_VERSION} \
+  && echo "${OPENRESTY_SRC_SHA1} *openresty.tar.gz" | sha1sum -c - \
+  && tar -xzf openresty.tar.gz \
+  \
+  && cd openresty-* \
+  && readonly NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
   && ./configure \
-       --prefix=$OPENRESTY_PREFIX \
-       --with-luajit \
-       --with-pcre-jit \
-       --with-ipv6 \
-       --with-http_ssl_module \
-       --without-http_ssi_module \
-       --without-http_userid_module \
-       --without-http_uwsgi_module \
-       --without-http_scgi_module \
-       --user=nginx --group=nginx \
-  && make \
+    --prefix=${OPENRESTY_PREFIX} \
+    --http-client-body-temp-path=${VAR_PREFIX}/client_body_temp \
+    --http-proxy-temp-path=${VAR_PREFIX}/proxy_temp \
+    --http-log-path=${VAR_PREFIX}/access.log \
+    --error-log-path=${VAR_PREFIX}/error.log \
+    --pid-path=${VAR_PREFIX}/nginx.pid \
+    --lock-path=${VAR_PREFIX}/nginx.lock \
+    --with-luajit \
+    --with-pcre-jit \
+    --with-ipv6 \
+    --with-http_ssl_module \
+    --without-http_ssi_module \
+    --with-http_realip_module \
+    --without-http_scgi_module \
+    --without-http_uwsgi_module \
+    --without-http_userid_module \
+    -j${NPROC} \
+  && make -j${NPROC} \
   && make install \
-  && ln -s $OPENRESTY_PREFIX/nginx/sbin/nginx /usr/local/bin/nginx \
-  && apk del tmp-build-deps \
-  && apk add $OPENRESTY_DEPS \
-  && rm -rf /tmp/openresty-*
+  \
+  && rm -rf /tmp/openresty-* \
+  && apk del .build-dependencies
 
-WORKDIR $OPENRESTY_PREFIX/nginx
+RUN ln -sf ${NGINX_PREFIX}/sbin/nginx /usr/local/bin/nginx \
+  && ln -sf ${NGINX_PREFIX}/sbin/nginx /usr/local/bin/openresty \
+  && ln -sf ${OPENRESTY_PREFIX}/bin/resty /usr/local/bin/resty \
+  && ln -sf ${OPENRESTY_PREFIX}/luajit/bin/luajit-* ${OPENRESTY_PREFIX}/luajit/bin/lua \
+  && ln -sf ${OPENRESTY_PREFIX}/luajit/bin/luajit-* /usr/local/bin/lua
 
+RUN apk --no-cache add \
+    libgcc \
+    libpcrecpp \
+    libpcre16 \
+    libpcre32 \
+    libssl1.0 \
+    libstdc++ \
+    openssl \
+    pcre
+
+WORKDIR $NGINX_PREFIX
 
 CMD ["nginx", "-g", "daemon off; error_log /dev/stderr info;"]
-
-#CMD ["nginx", "-g", "daemon off;"]

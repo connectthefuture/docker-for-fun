@@ -1,0 +1,8 @@
+{
+  "id": "mesos-dns",
+  "cmd": "sudo /usr/local/bin/mesos-dns -v=1 -config /etc/mesos-dns/config.json",
+  "cpus": 0.1,
+  "mem": 50.0,
+  "instances": 1,
+  "constraints": [["hostname", "CLUSTER", "node1"]]
+}

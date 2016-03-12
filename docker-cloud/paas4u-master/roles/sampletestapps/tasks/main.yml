@@ -1,0 +1,11 @@
+- name: copy marathon json file to remote node
+  copy: src=../files/pythonwebserver/deploy_to_marathon.json dest=/tmp/
+
+- name: deploy sample test app python web server (not in docker container) using marathon api
+  command: curl -X POST http://192.168.33.10:8080/v2/apps -d @/tmp/deploy_to_marathon.json -H "Content-type{{':'}} application/json"
+
+- name: copy marathon json file to remote node
+  copy: src=../files/wildflynodeinfo/deploy_to_marathon.json dest=/tmp/
+
+- name: deploy sample test app jboss/wildfly app using marathon api
+  command: curl -X POST http://192.168.33.10:8080/v2/apps -d @/tmp/deploy_to_marathon.json -H "Content-type{{':'}} application/json"

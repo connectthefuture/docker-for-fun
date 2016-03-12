@@ -1,0 +1,7 @@
+---
+- name: Include Install, config, services files
+  include: roles/consul/tasks/{{ item }}
+  with_items:
+    - install.yml
+    - config.yml
+    - service.yml

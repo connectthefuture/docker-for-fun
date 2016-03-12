@@ -1,0 +1,28 @@
+{
+  "id": "kafka-manager",
+  "cpus": 1.0,
+  "mem": 2048.0,
+  "instances": 1,
+  "env": {
+     "ZK_HOSTS": "r105u01.dsra.local:2181,r105u03.dsra.local:2181,r105u05.dsra.local:2181,r105u07.dsra.local:2181,r105u09.dsra.local:2181",
+     "APPLICATION_SECRET":"pleaseletmeplaywiththeothers"
+  },
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "sheepkiller/kafka-manager",
+      "forcePullImage": true,
+      "network": "BRIDGE",
+      "portMappings": [
+        { "containerPort": 9000, "hostPort": 31900, "servicePort": 9000, "protocol": "tcp" }
+      ],
+      "parameters": [
+        { "key": "name", "value": "kafka-manager" }
+      ]
+    }
+  },
+  "uris": [
+     "file:///etc/docker.tar.gz"
+  ],
+  "maxLaunchDelaySeconds": 7200
+}

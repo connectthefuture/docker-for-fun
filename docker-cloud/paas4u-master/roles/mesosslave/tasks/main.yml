@@ -1,0 +1,73 @@
+- name: update hosts file
+  template: src=../../common/templates/hosts.j2 dest=/etc/hosts
+
+- name: add mesosphere repo
+  apt_repository: repo="deb http://repos.mesosphere.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main" state=present
+
+- name: add an apt key from ubuntu keyserver
+  apt_key: keyserver=keyserver.ubuntu.com id=E56151BF
+
+- name: add openjdk repo
+  apt_repository: repo="ppa:openjdk-r/ppa"
+
+- name: update cache
+  apt: update_cache=yes
+
+- name: install openjdk
+  apt: pkg=openjdk-8-jdk state=latest
+
+- name: install mesosphere for slave nodes(includes zookeeper, mesos)
+  apt: pkg=mesos
+
+- name: add an apt signing key from mit for docker
+  apt_key: keyserver=hkp://pgp.mit.edu:80 id=58118E89F3A912897C070ADBF76221572C52609D
+
+- name: add docker repo
+  apt_repository: repo="deb https://apt.dockerproject.org/repo {{ ansible_distribution|lower }}-{{ ansible_distribution_release }} main" state=present
+
+- name: install docker
+  apt: pkg=docker-engine
+
+- name: add docker to list of containerizers
+  lineinfile: dest=/etc/mesos-slave/containerizers create=yes line="docker,mesos"
+
+- name: increase mesos timeout for large containers
+  lineinfile: dest=/etc/mesos-slave/executor_registration_timeout create=yes line="5mins"
+
+- name: set zookeeper master
+  replace: dest=/etc/mesos/zk regexp="localhost" replace="192.168.33.10"
+
+- name: configure syslog logging for mesos
+  copy: src=../../common/files/mesos.conf dest=/etc/rsyslog.d/
+
+- name: marathon.log
+  file: path=/var/log/mesos/marathon.log state=touch owner=root group=syslog mode="g+rw"
+
+- name: mesos-master.log
+  file: path=/var/log/mesos/mesos-master.log state=touch owner=root group=syslog mode="g+rw"
+
+- name: mesos-slave.log
+  file: path=/var/log/mesos/mesos-slave.log state=touch owner=root group=syslog mode="g+rw"
+
+- name: chronos
+  file: path=/var/log/mesos/chronos.log state=touch owner=root group=syslog mode="g+rw"
+
+- name: restart rsyslog
+  service: name=rsyslog state=restarted
+
+- name: start mesos-slave
+  service: name=mesos-slave state=started enabled=yes
+
+- name: disable mesos master from start up
+  lineinfile: dest=/etc/init/mesos-master.override create=yes line="manual"
+
+- name: disable zookeeper from start up
+  lineinfile: dest=/etc/init/zookeeper.override create=yes line="manual"
+
+- name: configure dns
+  template: src=../../common/templates/resolv.conf.j2 dest=/etc/resolv.conf
+
+- name: mesos version info
+  shell: dpkg -l | grep ' zookeeper \| mesos \| marathon \| chronos \| mesosphere '
+  register: out
+- debug: var=out.stdout_lines

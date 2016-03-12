@@ -1,0 +1,21 @@
+{
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "ciscocloud/mesos-consul",
+      "network": "BRIDGE",
+      "parameters": [
+        { "key": "rm", "value": "true" }
+      ]
+    }
+  },
+  "id": "mesos-consul",
+  "args": [
+  "--zk=zk://192.168.33.10:2181/mesos",
+  "--mesos-ip-order=mesos,host"
+  ],
+  "instances": 1,
+  "cpus": 0.1,
+  "mem": 256,
+  "constraints": [["hostname", "CLUSTER", "node1"]]
+}
