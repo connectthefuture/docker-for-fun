@@ -1,0 +1,6 @@
+iodoccompose:
+  image: edwin/iodocs
+  volumes:
+    - $(pwd):/iodocs
+  ports:
+    - "3001:3000"

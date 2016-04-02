@@ -1,0 +1,81 @@
+{
+    "name": "医联平台 API",
+    "description": "An example api.",
+    "protocol": "rest",
+    "basePath": "http://api.lowercase.sample.com",
+    "publicPath": "/v1",
+    "auth": {
+            "oauth": {
+                "version": "2.0",
+                "type": "authorization-code",
+                "base_uri": "https://foursquare.com/",
+                "authorize_uri": "oauth2/authenticate",
+                "access_token_uri": "oauth2/access_token_uri",
+                "token": {
+                    "param": "oauth_token",
+                    "location": "query"
+                }
+            }
+    },
+    "headers": {
+        "Accept": "application/json",
+        "Foo": "bar"
+    },
+    "resources": {
+        "预约挂号": {
+            "methods": {
+                "获取医疗结构列表": {
+                    "name": "获取医疗结构列表",
+                    "path": "/Organizations",
+                    "httpMethod": "GET",
+                    "description": "查询医疗卫生机构，调用此服务。",
+                    "parameters": {
+                        "address": {
+                            "type": "string",
+                            "required": true,
+                            "location": "query",
+                            "default": "上海、上海 and 闵行、上海 and 闵行 and 浦江镇、上海 or 无锡、上海市黄浦区制造局路639号",
+                            "description": "根据机构所在地理区划、详细地址Organization. OrgAddress来查询；支持:text、:exact等限定符；多个关键词支持AND和OR逻辑运算符"
+                        }
+                    }
+                },
+                "MethodA1User": {
+                    "name": "获取科室列表",
+                    "path": "/a1/grab/{userId}",
+                    "httpMethod": "GET",
+                    "description": "为什么文件变了页面不同步39478Grabs information from the A1 data set for a specific user",
+                    "parameters": {
+                        "参数1": {
+                            "type": "string",
+                            "required": true,
+                            "location": "header",
+                            "default": "",
+                            "description": "Description of the first parameter."
+                        },
+                        "参数2": {
+                            "type": "string",
+                            "required": true,
+                            "location": "query",
+                            "default": "",
+                            "description": "The userId parameter that is in the URI."
+                        },
+                        "参数3": {
+                            "type": "string",
+                            "required": true,
+                            "location": "query",
+                            "default": "",
+                            "description": "The userId parameter that is in the URI."
+                        },
+                        "参数4": {
+                            "type": "string",
+                            "required": true,
+                            "location": "query",
+                            "default": "",
+                            "description": "The userId parameter that is in the URI."
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

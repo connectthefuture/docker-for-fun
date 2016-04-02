@@ -1,0 +1,8 @@
+execute: nginx  -g "env LOR_ENV=dev;" -p `pwd`/ -c conf/nginx-dev.conf
+ERROR: Could not start app on port 8888
+execute: nginx  -g "env LOR_ENV=dev;" -p `pwd`/ -c conf/nginx-dev.conf
+ERROR: Could not start app on port 8888
+execute: nginx  -g "env LOR_ENV=dev;" -p `pwd`/ -c conf/nginx-dev.conf
+ERROR: Could not start app on port 8888
+execute: nginx  -g "env LOR_ENV=dev;" -p `pwd`/ -c conf/nginx-dev.conf
+ERROR: Could not start app on port 8888
