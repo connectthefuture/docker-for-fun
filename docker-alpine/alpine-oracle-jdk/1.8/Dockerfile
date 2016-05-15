@@ -6,7 +6,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/' /etc/apk/repositories
 
 
 # Install cURL
-RUN apk --update add curl ca-certificates tar && \
+RUN apk add --no-cache --virtual=build-dependencies curl ca-certificates tar && \
         curl -Ls https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk > /tmp/glibc-2.21-r2.apk && \
         apk add --allow-untrusted /tmp/glibc-2.21-r2.apk
 
@@ -40,7 +40,8 @@ RUN apk --update add curl ca-certificates tar && \
                              /opt/jdk/jre/lib/amd64/libglass.so \
                              /opt/jdk/jre/lib/amd64/libgstreamer-lite.so \
                              /opt/jdk/jre/lib/amd64/libjavafx*.so \
-                             /opt/jdk/jre/lib/amd64/libjfx*.so
+                             /opt/jdk/jre/lib/amd64/libjfx*.so  \
+            &&  apk del build-dependencies && \
 
 # Set environment
 ENV JAVA_HOME /opt/jdk

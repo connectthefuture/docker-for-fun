@@ -1,0 +1,12 @@
+postgrest:
+  image: boumi/postgrest:0.3.0.1
+  ports:
+    - "3000:3000"
+  environment:
+    POSTGREST_DBHOST: postgres
+    POSTGREST_DBPORT: 5432
+    POSTGREST_DBNAME: app_db
+    POSTGREST_DBUSER: app_user
+    POSTGREST_DBPASS: password
+  links:
+    - postgres:postgres
