@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-eval "$(docker-machine env default)"
-docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
+#eval "$(docker-machine env default)"
+#docker stop $(docker ps -a -q)
+#docker rm $(docker ps -a -q)
 
 docker build --no-cache -t suzel/docker-postgrest .
 docker run --name postgrest-service \
@@ -15,4 +15,4 @@ docker run --name postgrest-service \
              -e POSTGREST_DBPASS=password \
              -d suzel/docker-postgrest
 
-open http://$(docker-machine ip default):3000
+open http://$(docker-machine ip dev):3000
