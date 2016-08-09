@@ -1,4 +1,4 @@
-FROM datacenter/alpine:3.3
+FROM datacenter/alpine:3.2
 MAINTAINER Scott Mebberson <scott@scottmebberson.com>
 
 # Add commonly used packages

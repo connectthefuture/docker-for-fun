@@ -1,0 +1,13 @@
+sudo: required
+
+language: c
+
+services:
+  - docker
+
+before_install:
+  - docker info
+  - docker build -t anapsix/alpine-java 8/jre/
+
+script:
+  - docker run -it --rm anapsix/alpine-java java -version
