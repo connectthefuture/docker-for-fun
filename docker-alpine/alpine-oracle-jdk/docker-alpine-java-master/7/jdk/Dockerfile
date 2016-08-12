@@ -5,6 +5,9 @@ MAINTAINER Anastas Dancha <anapsix@random.io>
 # thanks to Vladimir Krivosheev <develar@gmail.com> aka @develar for smaller image
 # and Victor Palma <palma.victor@gmail.com> aka @devx for pointing it out
 
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/' /etc/apk/repositories
+
+
 # Java Version and other ENV
 ENV JAVA_VERSION_MAJOR=7 \
     JAVA_VERSION_MINOR=80 \

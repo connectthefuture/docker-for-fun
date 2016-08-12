@@ -1,4 +1,4 @@
-FROM iron/base
+FROM  dc/alpine
 
 RUN apk update && apk upgrade
 

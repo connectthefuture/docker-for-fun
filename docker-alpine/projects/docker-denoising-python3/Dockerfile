@@ -1,5 +1,5 @@
 #docker build -t dc/denoising .
-#docker run --name denoising -it -v /home/wanghs/dockerfiles-repo/denoising-dirty-documents/:/tmp dc/symmpy-base /bin/sh
+# docker run --rm  --name denoising-remove-background -it -v /home/wanghs/dockerfiles-repo/docker-for-fun/docker-alpine/projects/:/tmp dc/denoising  /bin/sh
 
 FROM alpine:3.4
 
@@ -23,7 +23,7 @@ RUN apk add --no-cache python3-dev && \
     pip3 --no-cache-dir install  -i https://pypi.tuna.tsinghua.edu.cn/simple -r /requirements.txt && \
     pip3 install  -i https://pypi.tuna.tsinghua.edu.cn/simple numpy==$NUMPY_VERSION && \
     pip3 install  -i https://pypi.tuna.tsinghua.edu.cn/simple pandas==$PANDAS_VERSION && \
-    pip3 install  -i https://pypi.tuna.tsinghua.edu.cn/simplematplotlib==$MATPLOT_VERSION && \
+    pip3 install  -i https://pypi.tuna.tsinghua.edu.cn/simple matplotlib==$MATPLOT_VERSION && \
     pip3 --no-cache-dir install  -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter && \
     apk del .build-deps && \
     rm -rf /tmp/glibc*apk /var/cache/apk/* /root/.cache/pip && \
@@ -31,6 +31,12 @@ RUN apk add --no-cache python3-dev && \
     ln -s /usr/bin/pip3 /usr/bin/pip && \
     mkdir /notebooks
 
+
+RUN  cd /tmp && \
+     git clone https://github.com/scipy/scipy.git && \
+     cd scipy && \
+     git clean -xdf && \
+     python setup.py install --user
 # Install the jupyter notebook
 VOLUME /notebooks
 EXPOSE 8888
