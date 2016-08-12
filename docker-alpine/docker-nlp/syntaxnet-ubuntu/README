@@ -1,0 +1,4 @@
+
+docker build -t dc/syntaxnet-ubuntu --no-cache . 
+echo "Name this boat" | docker run --rm -i brianlow/syntaxnet
+
